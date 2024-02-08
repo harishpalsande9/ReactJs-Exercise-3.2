@@ -9,6 +9,9 @@ const LazyAddressList = lazy(() => import("./components/AddressList"))
 const App = () => {
   const [data, setData] = useState([])
   const handleWorkAddressSubmit = (ele) => {
+    console.log(data)
+    console.log(ele)
+
     setData([...data, ele])
   };
 

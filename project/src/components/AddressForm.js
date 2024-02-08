@@ -38,6 +38,19 @@ const AddressForm = ({ onSubmit }) => {
             }
         }
 
+        if (formData.country === 'GB') {
+            // Line 1 contains optional house number for GB address
+            if (formData.line1.trim().length === 0) {
+                errors.line1 = 'Line 1 cannot be blank for GB address';
+            }
+        } else if (formData.country === 'FR') {
+            // Line 1 may contain alphanumeric for FR address
+            const regex = /^[\w\s-.]+$/;
+            if (!formData.line1.trim().match(regex)) {
+              errors.line1 = 'Invalid format for Line 1 in FR address';
+            }
+        }
+
         setErrors(errors);
 
         return Object.keys(errors).length === 0;
@@ -61,16 +74,20 @@ const AddressForm = ({ onSubmit }) => {
                                 <option value="GB">GB</option>
                                 <option value="FR">FR</option>
                             </select>
+                            {errors.country && <span className="text-danger">{errors.country}</span>}
+
                         </div>
                         <div className='col-md-4'>
                             <input type="text" name="postcode" className="form-control" placeholder="postcode" value={formData.postcode} onChange={handleChange} />
-                            {errors.postcode && <span className="error">{errors.postcode}</span>}
+                            {errors.postcode && <span className="text-danger">{errors.postcode}</span>}
                         </div>
                     </div>
                     <div className="row g-3 my-3">
                         
                         <div className="col-md-4">
                             <input type="text" name="line1" className="form-control" placeholder="Line 1" value={formData.line1} onChange={handleChange} />
+                            {errors.line1 && <span className="text-danger">{errors.line1}</span>}
+
                         </div>
                         <div className="col-md-4">
                             {formData.country === 'GB' && (
